@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<!-- Use a simpler container for the single-page view (styled in style.css) -->
+<div class="container simple-auth"> 
+    <div class="form-box Register static-form">
+        <form method="POST" action="">
+            <h2>Register</h2>
+
+            <!-- Name Input Box -->
+            <div class="input-box">
+                <input type="text" id="name" name="name" required>
+                <label for="name">Full Name</label>
+                <i class='bx bx-user'></i>
+            </div>
+            
+            <!-- Email Input Box -->
+            <div class="input-box">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+                <i class='bx bx-envelope'></i>
+            </div>
+
+            <!-- Username Input Box -->
+            <div class="input-box">
+                <input type="text" id="signup-username" name="username" required>
+                <label for="signup-username">Username</label>
+                <i class='bx bx-user-circle'></i>
+            </div>
+
+            <!-- Password Input Box -->
+            <div class="input-box">
+                <input type="password" id="signup-password" name="password" required>
+                <label for="signup-password">Password</label>
+                <i class='bx bx-lock-alt'></i>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+            <div class="regi-link">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

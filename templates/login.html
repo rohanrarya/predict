@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<!-- Uses the simple-auth and static-form classes defined in style.css to center and style the single form -->
+<div class="container simple-auth"> 
+    <div class="form-box Login static-form">
+        <!-- Ensure the action points to the correct Flask route -->
+        <form method="POST" action="{{ url_for('login') }}">
+            <h2>Log In</h2>
+
+            <!-- Username Input Box (Styled using input-box class) -->
+            <div class="input-box">
+                <input type="text" id="login-username" name="username" required>
+                <label for="login-username">Username</label>
+                <i class='bx bx-user'></i> 
+            </div>
+
+            <!-- Password Input Box (Styled using input-box class) -->
+            <div class="input-box">
+                <!-- IMPORTANT: Changed type to "password" for security -->
+                <input type="password" id="login-password" name="password" required>
+                <label for="login-password">Password</label>
+                <i class='bx bx-lock-alt'></i> 
+            </div>
+
+            <!-- Submit Button (Styled using btn class) -->
+            <button type="submit" class="btn">Log In</button>
+            
+            <!-- Registration Link (Styled using regi-link class) -->
+            <div class="regi-link">
+                <p>Not Registered? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Removed the redundant flash message block, as it is handled by index.html -->
+{% endblock %}

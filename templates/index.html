@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Block 'title' rewritten for clarity -->
+    <title>{% block title %}Property Application{% endblock %}</title>
+    <!-- 
+        CORRECTION: The filename MUST be a quoted string ('style.css') 
+        and NOT an undefined variable (style.css).
+    -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <!-- Link Boxicons library for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="main-content-container"> 
+        <!-- Flash Messages Block (For displaying success/error/warning messages from Flask) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <!-- The class uses the category (success, warning, error) for styling -->
+                        <div class="flash-{{ category }}"><h4>{{ message }}</h4></div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <main> 	
+            <!-- Block 'content' rewritten for clarity -->
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>

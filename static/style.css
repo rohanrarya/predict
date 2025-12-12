@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', sans-serif;
+    color: #fff;
+}
+
+/* This block CENTERS everything (the .container) horizontally and vertically */
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #25252b;
+}
+
+.container{
+    position: relative;
+    width: 750px;
+    height: 450px;
+    border: 2px solid #e46033;
+    box-shadow: 0 0 25px #e46033;
+    overflow: hidden;
+}
+
+.container .form-box{
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.form-box.Login{
+    left: 0;
+    padding: 0 65px;
+    pointer-events: all;
+    transition: 1.5s ease;
+}
+
+.form-box.Register{
+    right: 0;
+    padding: 0 65px;
+    pointer-events: none;
+    
+}
+
+.form-box h2{
+    text-align: center;
+    font-size: 32px;
+}
+
+.form-box .input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 25px 0;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #fff;
+    font-size: 16px;
+    padding-right: 28px;
+    transition: .5s;
+}
+
+.input-box label{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label{
+    top: -5px;
+    color: #e46033;
+}
+
+.input-box i{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 18px;
+    transition: .5s;
+}
+
+.input-box input:focus ~ i,
+.input-box input:valid ~ i{
+    color: #e46033;
+}
+
+.btn{
+    width: 100%;
+    height: 45px;
+    background: #e46033;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #25252b;
+    font-weight: 600;
+    transition: .5s;
+}
+
+.btn:hover{
+    background: #ff7548;
+}
+
+.form-box .regi-link{
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.regi-link p a{
+    color: #e46033;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.regi-link p a:hover{
+    text-decoration: underline;
+}
+
+/* Info content styling (for the animation side) */
+.container .info-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: right;
+    padding: 0 40px;
+    pointer-events: none;
+    color: #fff;
+}
+
+.info-content.Login{
+    right: 0;
+    text-align: right;
+    padding: 0 40px 60px 150px;
+    pointer-events: none;
+}
+
+.info-content.Register{
+    /* display: none; */
+    left: 0;
+    text-align: left;
+    padding: 0 150px 60px 38px;
+    pointer-events: none;
+}
+
+.info-content.Register .animation{
+    transform: translateX(-120%);
+    transition: .7s ease;
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(.1s * var(--S));
+}
+
+.container.active .info-content.Register .animation{
+    transform: translateX(0%);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(.1s * var(--li));
+}
+
+.info-content h2{
+    text-transform: uppercase;
+    font-size: 36px;
+    line-height: 1.3;
+}
+
+.info-content p{
+    font-size: 16px;
+}
+
+.container .curved-shape{
+    position: absolute;
+    right: 0;
+    top: -5px;
+    height: 600px;
+    width: 850px;
+    background: linear-gradient(45deg, #25252b, #e46033);
+    /*transform: rotate(10deg) skewY(40deg);*/
+    transform: rotate(10deg) skewY(40deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+    transition-delay: 1.6s;
+}
+
+.container .curved-shape2{
+    position: absolute;
+    left: 0;
+    top: -5px;
+    height: 600px;
+    width: 850px;
+    background: linear-gradient(45deg, transparent, #25252b, #e46033);
+    /*transform: rotate(10deg) skewY(40deg);*/
+    transform: rotate(-10deg) skewY(-40deg);
+    transform-origin: bottom left;
+    transition: 1.5s ease;
+    transition-delay: 1.6s;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.container.active .curved-shape{
+    transform: translateX(-430px) rotate(10deg) skewY(40deg);
+    transition-delay: 0s;
+}
+
+.container.active .curved-shape2{
+    transform: translateX(430px) rotate(-10deg) skewY(-40deg);
+    transition-delay: 0s;
+}
+
+.container.active .form-box.Login{
+    transform: translateX(-100%);
+    pointer-events: none;
+    transition-delay: 0s;
+}
+
+.container.active .form-box.Register{
+    transform: translateX(-100%);
+    pointer-events: all;
+    transition-delay: .7s;
+}
+
+.container.active .info-content.Login{
+    transform: translateX(-100%);
+    pointer-events: none;
+    transition-delay: 0s;
+}
+
+
+/* FLASH MESSAGE STYLING (from index.html) */
+.main-content-container {
+    /* Ensures flash messages float above the content */
+    position: relative;
+    z-index: 100;
+}
+
+.flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.flash-success, .flash-warning, .flash-error, .flash-info {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+}
+
+.flash-success {
+    background-color: #38a169; /* Green for success */
+    border-color: #2c7744;
+}
+
+.flash-price{
+    padding: 12px 0px;
+    
+    border-radius: 4px;
+    font-size: 30px;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    background-color: #0c3679da; /* Green for success */
+    border-color: #2c51a2;
+    text-align: center;
+}
+
+.flash-warning {
+    background-color: #ecc94b; /* Yellow for warning */
+    color: #25252b; /* Dark text for light background */
+    border-color: #b7941d;
+}
+
+.flash-error {
+    background-color: #e53e3e; /* Red for error */
+    border-color: #c53030;
+}
+
+.flash-info {
+    background-color: #4299e1; /* Blue for info */
+    border-color: #3182ce;
+}
+
+/* * =======================================================
+* STYLES FOR STATIC/SEPARATE LOGIN/SIGNUP PAGES 
+* =======================================================
+* This section ensures login.html and signup.html look good
+* without the animation effect, and keeps the forms centered.
+*/
+
+.simple-auth {
+    /* Centralize the single container */
+    width: 400px;
+    height: auto; /* Allow height to adjust */
+    padding: 40px 0;
+    border: 2px solid #e46033;
+    box-shadow: 0 0 25px #e46033;
+    border-radius: 15px;
+    overflow: hidden;
+    /* This ensures the content inside is centered */
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background: #25252b; 
+    
+    /* Override animation container defaults */
+    position: relative !important; 
+    transition: none !important;
+}
+
+.simple-auth .form-box.Register,
+.simple-auth .form-box.Login {
+    /* Override position absolute/width 50% from animated setup */
+    position: relative; 
+    width: 100%;
+    padding: 0 40px;
+    height: auto;
+    right: auto;
+    left: auto;
+    pointer-events: all; /* Make sure inputs are clickable */
+}
+
+/* Remove the animated shape backgrounds */
+.simple-auth .curved-shape,
+.simple-auth .curved-shape2 {
+    display: none;
+}
+
+/* Remove the Info content (text/toggle buttons) */
+.simple-auth .info-content {
+    display: none;
+}
+
+/* Remove conflicting animation styles for the form elements */
+.static-form .animation {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transition: none !important;
+}

@@ -1,0 +1,92 @@
+{% extends "index.html" %}
+
+{% block title %}Property Data Management & Prediction{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <!-- Link the specific CSS file for the application dashboard -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='app_style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="header-bar">
+        <h2>Welcome, {{ Name }}</h2>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Property Submission Form -->
+    <div class="form-section">
+        <h3>Enter Property Details for Price Prediction</h3>
+        <form method="POST" action="" class="property-form">
+
+            <div class="form-grid">
+                <label for="size">Size (sq ft):</label>
+                <input type="number" name="size" id="size" step="any" required>
+
+                <label for="age">Property Age (years):</label>
+                <input type="number" name="age" id="age" required>
+
+                <label for="rooms">Rooms:</label>
+                <input type="number" name="rooms" id="Rooms" required>
+                
+                <label for="distance">Distance From City (km):</label>
+                <input type="number" name="distance" id="distance" step="any" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Predict & Save Property</button>
+            
+        </form>
+    </div>
+
+    <!-- ALL Property Data Display (Restored Table View) -->
+    <div class="data-section">
+        <h3>Your Recorded Properties & Predicted Prices ({{ apps | length }} entries)</h3>
+        {% if apps %}
+        
+        <table class="data-table">
+            <!-- Table Header Row -->
+            <tr>
+                <!-- Added style to keep ID column small -->
+                <th style="width: 5%;">ID</th> 
+                <th>Size (sq ft)</th>
+                <th>Rooms</th>
+                <th>Age</th>
+                <th>Distance (km)</th>
+                <th>Predicted Price</th>
+                <th>Action</th>
+            </tr>
+            <!-- Table Data Rows -->
+            {% for app in apps %}
+            <tr>
+                <td style="width: 5%;">{{ app[0] }}</td>
+                <td>{{ app[1] }}</td>
+                <td>{{ app[2] }}</td>
+                <td>{{ app[3] }}</td>
+                <td>{{ app[4] }}</td>
+                <!-- Display the price at index 5 -->
+                <td> {{ app[5] if app[5] is not none else 'Processing...' }}</td> 
+                <td>
+                    <a href="{{ url_for('delete_application',app_id=app[0]) }}" 
+                       class="delete-link" 
+                       onclick="return confirm('Are you sure you want to delete ID: {{ app[0] }}?');">
+                       Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><a href="{{ url_for('clear_app') }}" onclick="return confirm('Are You Sure?')" class="flash-error">Clear</a></td>
+                <td><a href="{{ url_for('export') }}" class="flash-success">Export in CSV</a></td>
+            </tr>
+        </table>
+
+        {% else %}
+        <p class="no-data">No property data saved yet. Use the form above to add an entry for prediction.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Note: Flash messages are handled by index.html (the base template) -->
+{% endblock %}
