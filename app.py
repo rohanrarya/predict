@@ -219,4 +219,5 @@ def export():
 
 if "__main__" == __name__ :
     db_init()
-    app.run(debug=True)
+
+    app.run(host="0.0.0.0", port=5000)
