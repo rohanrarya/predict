@@ -34,7 +34,6 @@ def get_connection():
             if "sslmode" not in url:
                 separator = "&" if "?" in url else "?"
                 url = f"{url}{separator}sslmode=require"
-            # 4-second timeout to prevent serverless function hangs
             return psycopg2.connect(url, connect_timeout=4)
         except Exception as e:
             print(f"[WARNING] PostgreSQL connection failed: {e}. Falling back to SQLite.")
@@ -46,7 +45,6 @@ def get_connection():
 def execute_sql(query: str, params: tuple = (), commit: bool = False, fetchone: bool = False, fetchall: bool = False):
     """Executes a SQL query transparently on both PostgreSQL and SQLite."""
     conn = get_connection()
-    # Check if this connection is PostgreSQL or SQLite
     using_pg = hasattr(conn, "get_dsn_parameters")
     adjusted_query = query.replace("?", "%s") if using_pg else query
 
@@ -153,16 +151,12 @@ def set_system_state(key: str, value: str):
 
 
 def is_maintenance_mode() -> bool:
-    """
-    Checks if the system is currently in maintenance mode (retraining in progress).
-    Includes a 10-minute auto-recovery safeguard.
-    """
+    """Checks if the system is currently in maintenance mode with a 10-minute auto-recovery safeguard."""
     try:
         maint_val = get_system_state("maintenance_mode", "false")
         if not maint_val or maint_val.lower() != "true":
             return False
 
-        # Safety check: if maintenance was started > 10 minutes ago, auto-deactivate
         started_at_str = get_system_state("maintenance_started_at", "0")
         if started_at_str:
             started_at = float(started_at_str)
@@ -175,22 +169,20 @@ def is_maintenance_mode() -> bool:
 
 
 def filter_quality_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Filters dataset for age <= 80 and removes price-per-sqft fluctuation spikes."""
+    """Quality filter tailored for Indian urban residential properties."""
     clean_df = df.copy()
-    clean_df = clean_df[(clean_df['age'] >= 0) & (clean_df['age'] <= 80)]
     clean_df = clean_df[
-        (clean_df['size'] >= 200) & (clean_df['size'] <= 8000) &
-        (clean_df['rooms'] >= 1) & (clean_df['rooms'] <= 10) &
-        (clean_df['bathrooms'] >= 1) & (clean_df['bathrooms'] <= 6) &
-        (clean_df['distance'] >= 0.1) & (clean_df['distance'] <= 50.0)
+        (clean_df['size'] >= 350) & (clean_df['size'] <= 8000) &
+        (clean_df['rooms'] >= 1) & (clean_df['rooms'] <= 8) &
+        (clean_df['bathrooms'] >= 1) & (clean_df['bathrooms'] <= 8) &
+        (clean_df['age'] >= 0) & (clean_df['age'] <= 60) &
+        (clean_df['distance'] >= 0.1) & (clean_df['distance'] <= 50.0) &
+        (clean_df['price'] >= 1000000) & (clean_df['price'] <= 80000000)
     ]
-    price_per_sqft = clean_df['price'] / clean_df['size']
-    q25 = price_per_sqft.quantile(0.10)
-    q75 = price_per_sqft.quantile(0.90)
-    iqr = q75 - q25
-    lower_bound = max(100, q25 - 1.5 * iqr)
-    upper_bound = q75 + 1.5 * iqr
-    clean_df = clean_df[(price_per_sqft >= lower_bound) & (price_per_sqft <= upper_bound)]
+    rate_per_sqft = clean_df['price'] / clean_df['size']
+    lower_rate = rate_per_sqft.quantile(0.04)
+    upper_rate = rate_per_sqft.quantile(0.96)
+    clean_df = clean_df[(rate_per_sqft >= lower_rate) & (rate_per_sqft <= upper_rate)]
     return clean_df.reset_index(drop=True)
 
 
@@ -210,12 +202,12 @@ def get_new_entries_count() -> int:
 
 
 def get_total_count() -> int:
-    """Returns total records (4,878 verified dataset records + user entries)."""
+    """Returns total records (4,800 verified Indian dataset records + user entries)."""
     try:
         user_cnt = get_new_entries_count()
-        return 4878 + user_cnt
+        return 4800 + user_cnt
     except Exception:
-        return 4878
+        return 4800
 
 
 def get_user_properties(limit: int = 50):

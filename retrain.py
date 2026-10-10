@@ -78,7 +78,7 @@ def run_retraining():
     r2 = r2_score(y_test, y_pred)
 
     print(f"Retraining Complete in {time.time() - start_time:.2f}s!")
-    print(f"MAE: ${mae:,.2f} | R² Score: {r2:.4f}")
+    print(f"MAE: Rs. {mae:,.2f} ({mae/100000:.2f} Lakhs) | R2 Score: {r2:.4f}")
 
     if r2 < 0.50:
         print("WARNING: Model quality degraded below threshold. Rejecting update.")

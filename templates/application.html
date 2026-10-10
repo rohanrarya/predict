@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 
-{% block title %}Real Estate Price Predictor{% endblock %}
+{% block title %}India Real Estate Price Predictor{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -11,20 +11,20 @@
 <div class="dashboard-container">
     <div class="header-bar">
         <div class="header-title-group">
-            <h2><i class='bx bx-building-house'></i> Property Price Predictor</h2>
-            <p class="header-subtitle">Accurate AI valuation with safety value filtering & verified database records</p>
+            <h2><i class='bx bx-building-house'></i> India Property Price Predictor</h2>
+            <p class="header-subtitle">Accurate AI valuation for Indian residential properties (Apartments, Flats & Villas) in ₹ Rupees</p>
             <div class="stats-badge-row">
-                <span class="db-badge"><i class='bx bx-data'></i> {{ "{:,}".format(total_records) }} Records ({{ "Neon Postgres" if is_postgres else "SQLite" }})</span>
+                <span class="db-badge"><i class='bx bx-map-pin'></i> 4,800 Indian Market Records ({{ "Neon Postgres" if is_postgres else "SQLite" }})</span>
                 <span class="shield-badge"><i class='bx bx-shield-quarter'></i> Safety Filter Active</span>
-                <span class="learning-badge" title="Automatically triggers model retraining when reaching {{ threshold }}"><i class='bx bx-brain'></i> Retrain Target: {{ new_entries }}/{{ threshold }}</span>
+                <span class="learning-badge" title="Automatically triggers model retraining when reaching {{ threshold }} new entries"><i class='bx bx-brain'></i> Retrain Target: {{ new_entries }}/{{ threshold }} New</span>
             </div>
         </div>
         <div class="header-actions">
             {% if apps %}
-            <a href="{{ url_for('export', type='user') }}" class="action-btn export-btn" title="Download your valuations as CSV">
-                <i class='bx bx-download'></i> Export History
+            <a href="{{ url_for('export') }}" class="action-btn export-btn" title="Download your recent valuations as CSV">
+                <i class='bx bx-download'></i> Export My History
             </a>
-            <a href="{{ url_for('clear_app') }}" onclick="return confirm('Clear your recent valuations? Database dataset will be preserved.');" class="action-btn clear-btn" title="Clear recent valuations">
+            <a href="{{ url_for('clear_app') }}" onclick="return confirm('Clear your recent valuations?');" class="action-btn clear-btn" title="Clear recent valuations">
                 <i class='bx bx-trash'></i> Clear
             </a>
             {% endif %}
@@ -33,53 +33,53 @@
 
     <!-- Property Submission Form -->
     <div class="form-section">
-        <h3><i class='bx bx-calculator'></i> Enter Property Details</h3>
+        <h3><i class='bx bx-calculator'></i> Enter Property Details (India)</h3>
         <form method="POST" action="{{ url_for('home') }}" class="property-form">
 
             <div class="form-grid">
                 <div class="input-field">
-                    <label for="size">Size (sq ft): <span class="field-hint">(200 - 15,000)</span></label>
+                    <label for="size">Built-up / Carpet Area (sq ft): <span class="field-hint">(350 - 8,000)</span></label>
                     <div class="input-wrapper">
                         <i class='bx bx-area input-icon'></i>
-                        <input type="number" name="size" id="size" step="any" min="200" max="15000" placeholder="e.g. 1500" required>
+                        <input type="number" name="size" id="size" step="any" min="350" max="8000" placeholder="e.g. 1250" required>
                     </div>
                 </div>
 
                 <div class="input-field">
-                    <label for="rooms">Rooms (Bedrooms): <span class="field-hint">(1 - 15)</span></label>
+                    <label for="rooms">Configuration (BHK / Rooms): <span class="field-hint">(1 - 6 BHK)</span></label>
                     <div class="input-wrapper">
                         <i class='bx bx-bed input-icon'></i>
-                        <input type="number" name="rooms" id="rooms" min="1" max="15" placeholder="e.g. 3" required>
+                        <input type="number" name="rooms" id="rooms" min="1" max="6" placeholder="e.g. 2 or 3" required>
                     </div>
                 </div>
 
                 <div class="input-field">
-                    <label for="bathrooms">Bathrooms: <span class="field-hint">(1 - 10)</span></label>
+                    <label for="bathrooms">Bathrooms: <span class="field-hint">(1 - 6)</span></label>
                     <div class="input-wrapper">
                         <i class='bx bx-bath input-icon'></i>
-                        <input type="number" name="bathrooms" id="bathrooms" min="1" max="10" placeholder="e.g. 2" required>
+                        <input type="number" name="bathrooms" id="bathrooms" min="1" max="6" placeholder="e.g. 2" required>
                     </div>
                 </div>
 
                 <div class="input-field">
-                    <label for="age">Property Age (years): <span class="field-hint">(0 - 100)</span></label>
+                    <label for="age">Property Age (years): <span class="field-hint">(0 - 50 yrs)</span></label>
                     <div class="input-wrapper">
                         <i class='bx bx-time-five input-icon'></i>
-                        <input type="number" name="age" id="age" min="0" max="100" placeholder="e.g. 10" required>
+                        <input type="number" name="age" id="age" min="0" max="50" placeholder="e.g. 5" required>
                     </div>
                 </div>
 
                 <div class="input-field full-width-field">
-                    <label for="distance">Distance From City (km): <span class="field-hint">(0.1 - 70 km)</span></label>
+                    <label for="distance">Distance from City Center / Tech Hub (km): <span class="field-hint">(0.1 - 35 km)</span></label>
                     <div class="input-wrapper">
                         <i class='bx bx-map-pin input-icon'></i>
-                        <input type="number" name="distance" id="distance" step="any" min="0.1" max="70" placeholder="e.g. 5.5" required>
+                        <input type="number" name="distance" id="distance" step="any" min="0.1" max="35" placeholder="e.g. 12.5" required>
                     </div>
                 </div>
             </div>
             
             <button type="submit" class="submit-btn">
-                <i class='bx bx-bolt-circle'></i> Predict & Save to Database
+                <i class='bx bx-bolt-circle'></i> Estimate Price in ₹ (INR)
             </button>
             
         </form>
@@ -89,11 +89,6 @@
     <div class="data-section">
         <div class="data-section-header">
             <h3><i class='bx bx-history'></i> Recent Valuations ({{ apps | length }})</h3>
-            {% if total_records > 0 %}
-            <a href="{{ url_for('export', type='all') }}" class="export-all-link" title="Export all database records (including master dataset)">
-                <i class='bx bx-cloud-download'></i> Export Entire Database ({{ "{:,}".format(total_records) }} records)
-            </a>
-            {% endif %}
         </div>
         
         {% if apps %}
@@ -102,12 +97,12 @@
                 <thead>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th>Size (sq ft)</th>
-                        <th>Rooms</th>
+                        <th>Area (sq ft)</th>
+                        <th>BHK</th>
                         <th>Bathrooms</th>
                         <th>Age (yrs)</th>
                         <th>Distance (km)</th>
-                        <th>Predicted Price</th>
+                        <th>Estimated Price (₹)</th>
                         <th style="text-align: center;">Action</th>
                     </tr>
                 </thead>
@@ -115,23 +110,19 @@
                     {% for app in apps %}
                     <tr>
                         <td>{{ app[0] }}</td>
-                        <td>{{ "{:,.0f}".format(app[1]) }}</td>
-                        <td>{{ app[2] }}</td>
+                        <td>{{ "{:,.0f}".format(app[1]) }} sq ft</td>
+                        <td>{{ app[2] }} BHK</td>
                         <td>{{ app[3] }}</td>
-                        <td>{{ app[4] }}</td>
+                        <td>{{ app[4] }} yrs</td>
                         <td>{{ app[5] }} km</td>
                         <td class="price-cell">
-                            {% if app[6] is not none %}
-                                ${{ "{:,.0f}".format(app[6]) }}
-                            {% else %}
-                                <em>Processing...</em>
-                            {% endif %}
+                            {{ app[6] | inr_format }}
                         </td>
                         <td style="text-align: center;">
                             <a href="{{ url_for('delete_application', app_id=app[0]) }}" 
                                class="delete-link" 
-                               title="Delete this entry"
-                               onclick="return confirm('Are you sure you want to delete entry #{{ app[0] }}?');">
+                               title="Delete this valuation"
+                               onclick="return confirm('Are you sure you want to delete valuation #{{ app[0] }}?');">
                                <i class='bx bx-trash'></i> Delete
                             </a>
                         </td>
@@ -142,22 +133,19 @@
         </div>
 
         <div class="table-actions-bottom">
-            <a href="{{ url_for('clear_app') }}" onclick="return confirm('Are you sure you want to clear recent valuations?');" class="btn-sm btn-clear">
+            <a href="{{ url_for('clear_app') }}" onclick="return confirm('Are you sure you want to clear your recent valuations?');" class="btn-sm btn-clear">
                 <i class='bx bx-trash'></i> Clear Valuations
             </a>
-            <a href="{{ url_for('export', type='user') }}" class="btn-sm btn-export">
-                <i class='bx bx-download'></i> Export History CSV
-            </a>
-            <a href="{{ url_for('sync_db') }}" class="btn-sm btn-sync" title="Reload and re-filter dataset into database">
-                <i class='bx bx-refresh'></i> Re-sync DB
+            <a href="{{ url_for('export') }}" class="btn-sm btn-export" title="Download only your recent valuations as CSV">
+                <i class='bx bx-download'></i> Export My Valuations (CSV)
             </a>
         </div>
 
         {% else %}
         <div class="no-data">
             <i class='bx bx-info-circle'></i>
-            <p>No custom property valuations added yet. Enter details above and click <strong>Predict & Save to Database</strong>.</p>
-            <p class="dataset-ready-note"><i class='bx bx-check-circle'></i> <strong>{{ "{:,}".format(total_records) }}</strong> verified, quality-filtered training records are loaded in the database.</p>
+            <p>No property valuations generated yet. Enter details above and click <strong>Estimate Price in ₹ (INR)</strong>.</p>
+            <p class="dataset-ready-note"><i class='bx bx-check-circle'></i> Model trained on <strong>4,800</strong> authentic Indian residential property market sales.</p>
         </div>
         {% endif %}
     </div>

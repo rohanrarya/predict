@@ -15,7 +15,7 @@ app = Flask(
     template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static")
 )
-app.secret_key = os.environ.get("SECRET_KEY", "predict-secret-key-vercel-deployment-2025")
+app.secret_key = os.environ.get("SECRET_KEY", "predict-india-secret-key-2025")
 
 MODEL_PATH = os.path.join(BASE_DIR, "models", "property_model.joblib")
 RETRAIN_THRESHOLD = int(os.environ.get("RETRAIN_THRESHOLD", 500))
@@ -33,32 +33,62 @@ def get_model():
     return _loaded_model
 
 
+def format_inr(amount: float) -> str:
+    """Formats numeric amount into Indian Currency notation (Lakhs & Crores)."""
+    amount = round(amount)
+    if amount >= 10000000:
+        crores = amount / 10000000
+        return f"₹{crores:.2f} Crore (₹{amount:,})"
+    elif amount >= 100000:
+        lakhs = amount / 100000
+        return f"₹{lakhs:.2f} Lakhs (₹{amount:,})"
+    else:
+        return f"₹{amount:,}"
+
+
+@app.template_filter("inr_format")
+def inr_format(val):
+    """Jinja template filter to format Indian Rupees in tables."""
+    if val is None:
+        return "Processing..."
+    try:
+        val = round(float(val))
+        if val >= 10000000:
+            return f"₹ {val/10000000:.2f} Cr"
+        elif val >= 100000:
+            return f"₹ {val/100000:.2f} Lakh"
+        else:
+            return f"₹ {val:,}"
+    except Exception:
+        return f"₹ {val}"
+
+
 def validate_property_input(size: float, rooms: int, bathrooms: int, age: int, distance: float) -> tuple[bool, str]:
     """
-    SAFETY VALUE FEATURE:
+    SAFETY VALUE FEATURE FOR INDIAN REAL ESTATE:
     Filters out fake, corrupt, or unrealistic values to ensure the ML model
     never receives confusing or confounding inputs.
     """
-    # 1. Realistic physical bounds
-    if size < 200 or size > 15000:
-        return False, "Fake or invalid size: Property area must be between 200 and 15,000 sq ft."
-    if rooms < 1 or rooms > 15:
-        return False, "Fake or invalid rooms: Number of rooms must be between 1 and 15."
-    if bathrooms < 1 or bathrooms > 10:
-        return False, "Fake or invalid bathrooms: Number of bathrooms must be between 1 and 10."
-    if age < 0 or age > 100:
-        return False, "Value filtered: Property age must be between 0 and 100 years. Properties over 100 years fluctuate excessively."
-    if distance < 0.1 or distance > 70.0:
-        return False, "Fake or invalid distance: Distance to city center must be between 0.1 and 70 km."
+    # 1. Realistic physical bounds for Indian homes
+    if size < 350 or size > 8000:
+        return False, "Fake or invalid size: Property area must be between 350 and 8,000 sq ft."
+    if rooms < 1 or rooms > 6:
+        return False, "Fake or invalid BHK: Rooms must be between 1 BHK and 6 BHK."
+    if bathrooms < 1 or bathrooms > 6:
+        return False, "Fake or invalid bathrooms: Number of bathrooms must be between 1 and 6."
+    if age < 0 or age > 50:
+        return False, "Value filtered: Property age must be between 0 and 50 years."
+    if distance < 0.1 or distance > 35.0:
+        return False, "Fake or invalid distance: Distance to city center/tech hub must be between 0.1 and 35 km."
 
-    # 2. Cross-feature sanity checks (catches fake combinations)
+    # 2. Cross-feature sanity checks
     avg_room_size = size / rooms
     if avg_room_size < 50:
-        return False, f"Fake proportion detected: {size:.0f} sq ft is too tiny for {rooms} rooms (at least 50 sq ft/room required)."
-    if avg_room_size > 4000:
+        return False, f"Fake proportion detected: {size:.0f} sq ft is physically impossible for {rooms} BHK."
+    if avg_room_size > 3000:
         return False, f"Fake proportion detected: {size:.0f} sq ft is excessively large for only {rooms} room(s)."
     if bathrooms > rooms + 2:
-        return False, f"Fake combination detected: {bathrooms} bathrooms is unrealistic for {rooms} room(s)."
+        return False, f"Fake combination detected: {bathrooms} bathrooms is unrealistic for a {rooms} BHK property."
 
     return True, ""
 
@@ -97,14 +127,14 @@ def trigger_github_retrain() -> bool:
 
 
 def predict_price(size: float, rooms: int, bathrooms: int, age: int, distance: float) -> int:
-    """Predict property price using the trained gradient boosting model."""
+    """Predict Indian property price in INR using the trained gradient boosting model."""
     model = get_model()
     df = pd.DataFrame(
         [[size, rooms, bathrooms, age, distance]],
         columns=["size", "rooms", "bathrooms", "age", "distance"]
     )
     predicted_val = model.predict(df)[0]
-    return max(50000, round(float(predicted_val)))
+    return max(1500000, round(float(predicted_val)))
 
 
 # Initialize database safely on startup
@@ -137,13 +167,13 @@ def home():
             age = int(request.form.get("age", -1))
             distance = float(request.form.get("distance", -1.0))
 
-            # SAFETY VALUE CHECK
+            # SAFETY VALUE CHECK FOR INDIA
             is_valid, error_msg = validate_property_input(size, rooms, bathrooms, age, distance)
             if not is_valid:
                 flash(f"⚠️ {error_msg}", "warning")
                 return redirect(url_for("home"))
 
-            # Predict price
+            # Predict price in INR
             price = predict_price(size, rooms, bathrooms, age, distance)
 
             # Store new data in database
@@ -163,7 +193,7 @@ def home():
             except Exception as e:
                 print(f"[ERROR] Retrain check error: {e}")
 
-            flash(f"Estimated Property Price: ${price:,.0f}", "price")
+            flash(f"Estimated Property Price: {format_inr(price)}", "price")
             return redirect(url_for("home"))
 
         except ValueError:
@@ -181,7 +211,7 @@ def home():
     except Exception as e:
         print(f"[ERROR] Dashboard data error: {e}")
         user_properties = []
-        total_records = 4878
+        total_records = 4800
         new_entries_count = 0
 
     return render_template(
@@ -198,9 +228,9 @@ def home():
 def delete_application(app_id):
     try:
         db.delete_property(app_id)
-        flash(f"Property record #{app_id} deleted successfully.", "success")
+        flash(f"Valuation record #{app_id} deleted successfully.", "success")
     except Exception:
-        flash("Error deleting property record.", "error")
+        flash("Error deleting record.", "error")
     return redirect(url_for("home"))
 
 
@@ -210,7 +240,7 @@ def clear_app():
         db.clear_user_properties()
         flash("Your recent valuation history has been cleared.", "info")
     except Exception:
-        flash("Error clearing property records.", "error")
+        flash("Error clearing valuation records.", "error")
     return redirect(url_for("home"))
 
 
@@ -243,24 +273,25 @@ def maintenance_off():
 
 @app.route("/sync-db")
 def sync_db():
-    """Manual/Optional route to verify DB connection."""
+    """Database status check."""
     flash("Database connection verified and active.", "success")
     return redirect(url_for("home"))
 
 
 @app.route("/export")
 def export():
-    export_type = request.args.get("type", "user")
-    headers = ["ID", "Size (sq ft)", "Rooms", "Bathrooms", "Property Age (yrs)", "Distance from City (km)", "Price ($)", "Source", "Date"]
+    """
+    Exports ONLY the user's recent/current property valuations.
+    Does NOT export the 4,000+ baseline dataset.
+    """
+    headers = ["ID", "Size (sq ft)", "Configuration (BHK)", "Bathrooms", "Property Age (yrs)", "Distance from Tech Hub (km)", "Price (INR)", "Date"]
     csv_rows = [",".join(headers)]
 
     try:
-        if export_type == "all":
-            rows = db.execute_sql("SELECT id, size, rooms, bathrooms, age, distance, price, source, created_at FROM properties ORDER BY id DESC", fetchall=True)
-            filename = "all_database_properties.csv"
-        else:
-            rows = db.execute_sql("SELECT id, size, rooms, bathrooms, age, distance, price, source, created_at FROM properties WHERE source = 'user_entry' ORDER BY id DESC", fetchall=True)
-            filename = "my_property_predictions.csv"
+        rows = db.execute_sql(
+            "SELECT id, size, rooms, bathrooms, age, distance, price, created_at FROM properties WHERE source = 'user_entry' ORDER BY id DESC",
+            fetchall=True
+        )
 
         if rows:
             for row in rows:
@@ -268,18 +299,18 @@ def export():
 
         csv_content = "\n".join(csv_rows) + "\n"
         response = make_response(csv_content)
-        response.headers["Content-Disposition"] = f"attachment; filename={filename}"
-        response.headers["Content-Type"] = "text/csv"
+        response.headers["Content-Disposition"] = "attachment; filename=my_recent_valuations.csv"
+        response.headers["Content-Type"] = "text/csv; charset=utf-8"
         return response
     except Exception:
-        flash("Error exporting data.", "error")
+        flash("Error exporting valuation data.", "error")
         return redirect(url_for("home"))
 
 
-# Health check endpoint for monitoring & Vercel
+# Health check endpoint
 @app.route("/health")
 def health():
-    return {"status": "ok", "postgres": db.is_postgres()}
+    return {"status": "ok", "country": "India", "postgres": db.is_postgres()}
 
 
 # Redirect legacy routes to home
