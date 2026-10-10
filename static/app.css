@@ -403,6 +403,19 @@
     font-weight: 500;
 }
 
+.learning-badge {
+    background: rgba(147, 51, 234, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(147, 51, 234, 0.4);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
+
 .field-hint {
     font-size: 11px;
     color: #888;

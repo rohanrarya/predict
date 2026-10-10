@@ -14,8 +14,9 @@
             <h2><i class='bx bx-building-house'></i> Property Price Predictor</h2>
             <p class="header-subtitle">Accurate AI valuation with safety value filtering & verified database records</p>
             <div class="stats-badge-row">
-                <span class="db-badge"><i class='bx bx-data'></i> {{ "{:,}".format(total_records) }} Verified Records in DB</span>
+                <span class="db-badge"><i class='bx bx-data'></i> {{ "{:,}".format(total_records) }} Records ({{ "Neon Postgres" if is_postgres else "SQLite" }})</span>
                 <span class="shield-badge"><i class='bx bx-shield-quarter'></i> Safety Filter Active</span>
+                <span class="learning-badge" title="Automatically triggers model retraining when reaching {{ threshold }}"><i class='bx bx-brain'></i> Retrain Target: {{ new_entries }}/{{ threshold }}</span>
             </div>
         </div>
         <div class="header-actions">

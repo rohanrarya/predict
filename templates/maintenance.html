@@ -1,0 +1,167 @@
+{% extends "index.html" %}
+
+{% block title %}Model Retraining in Progress | Property Predictor{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <!-- Auto-refresh every 20 seconds to check if retraining is complete -->
+    <meta http-equiv="refresh" content="20">
+    <style>
+        .maintenance-container {
+            max-width: 650px;
+            width: 100%;
+            margin: 60px auto;
+            padding: 40px 30px;
+            background-color: #333333;
+            border-radius: 12px;
+            border: 2px solid #e46033;
+            box-shadow: 0 0 35px rgba(228, 96, 51, 0.45);
+            text-align: center;
+            color: #fff;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .maint-icon-wrapper {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+            background: rgba(228, 96, 51, 0.15);
+            border: 2px solid #e46033;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .maint-icon-wrapper i {
+            font-size: 46px;
+            color: #ff7548;
+            animation: pulse-spin 3s infinite linear;
+        }
+
+        @keyframes pulse-spin {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .maintenance-container h2 {
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .maintenance-container p {
+            font-size: 15px;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(228, 96, 51, 0.2);
+            color: #ff9166;
+            border: 1px solid #e46033;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff7548;
+            border-radius: 50%;
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: #25252b;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar-animated {
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, #e46033, #ff7548, #ecc94b);
+            border-radius: 4px;
+            animation: loading-bar 2s infinite ease-in-out;
+        }
+
+        @keyframes loading-bar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .refresh-btn {
+            background: #e46033;
+            color: #1e1e24;
+            padding: 12px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            background: #ff7548;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 117, 72, 0.4);
+        }
+
+        .auto-refresh-notice {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="maintenance-container">
+    <div class="maint-icon-wrapper">
+        <i class='bx bx-brain'></i>
+    </div>
+
+    <div class="status-pill">
+        <span class="status-dot"></span> Background ML Retraining in Progress
+    </div>
+
+    <h2>AI Valuation Model is Updating</h2>
+    <p>
+        The system has received <strong>500 new verified market property transactions</strong>! 
+        Our Gradient Boosting algorithm is currently retraining on the updated dataset to increase prediction accuracy.
+    </p>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar-animated"></div>
+    </div>
+
+    <button onclick="window.location.reload();" class="refresh-btn">
+        <i class='bx bx-refresh'></i> Check If Update Is Finished
+    </button>
+    <p class="auto-refresh-notice">This page automatically refreshes every 20 seconds.</p>
+</div>
+{% endblock %}
