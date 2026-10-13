@@ -1,10 +1,10 @@
-/* Real Estate Property Price Predictor Stylesheet */
+/* Real Estate Property Price Predictor Stylesheet (India) */
 
 .dashboard-container {
     max-width: 950px;
     width: 100%;
-    margin: 30px auto;
-    padding: 30px;
+    margin: 25px auto;
+    padding: 28px 30px;
     background-color: #333333;
     border-radius: 12px;
     border: 1px solid rgba(228, 96, 51, 0.3);
@@ -17,37 +17,92 @@
 .header-bar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 20px;
     border-bottom: 3px solid #e46033;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     gap: 15px;
 }
 
+.header-title-group {
+    flex: 1;
+}
+
 .header-title-group h2 {
-    font-size: 26px;
+    font-size: 24px;
     color: #fff;
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 0;
+    line-height: 1.3;
 }
 
 .header-title-group h2 i {
     color: #e46033;
-    font-size: 30px;
+    font-size: 28px;
+    flex-shrink: 0;
 }
 
 .header-subtitle {
-    font-size: 14px;
+    font-size: 13.5px;
     color: #a0a0a0;
     margin-top: 6px;
+    line-height: 1.4;
+}
+
+.stats-badge-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.db-badge {
+    background: rgba(56, 161, 105, 0.15);
+    color: #68d391;
+    border: 1px solid rgba(56, 161, 105, 0.4);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
+
+.shield-badge {
+    background: rgba(228, 96, 51, 0.15);
+    color: #ff9166;
+    border: 1px solid rgba(228, 96, 51, 0.4);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
+
+.learning-badge {
+    background: rgba(147, 51, 234, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(147, 51, 234, 0.4);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
 }
 
 .header-actions {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
 }
 
 .action-btn {
@@ -61,6 +116,7 @@
     gap: 6px;
     transition: all 0.25s ease;
     white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .export-btn {
@@ -86,17 +142,18 @@
 
 /* Form Section */
 .form-section {
-    margin-bottom: 35px;
-    padding: 24px;
+    margin-bottom: 30px;
+    padding: 22px 24px;
     background-color: #3a3a3a;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
 }
 
 .form-section h3 {
     color: #e46033;
-    font-size: 20px;
-    margin-bottom: 22px;
+    font-size: 19px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -105,7 +162,7 @@
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 18px 24px;
+    gap: 16px 20px;
     align-items: flex-start;
 }
 
@@ -119,16 +176,24 @@
 }
 
 .input-field label {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
     color: #e2e8f0;
     margin-bottom: 7px;
+    line-height: 1.3;
+}
+
+.field-hint {
+    font-size: 11px;
+    color: #888;
+    font-weight: 400;
 }
 
 .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .input-icon {
@@ -137,20 +202,23 @@
     color: #e46033;
     font-size: 18px;
     pointer-events: none;
+    z-index: 2;
 }
 
 .input-wrapper input {
     width: 100%;
-    height: 44px;
+    height: 46px;
     padding: 10px 14px 10px 42px;
     border: 1px solid #555;
     border-radius: 6px;
     background-color: #444;
     color: #fff;
-    font-size: 15px;
+    font-size: 16px; /* 16px prevents iOS Safari auto-zoom on tap */
     font-family: inherit;
     box-sizing: border-box;
-    transition: border-color 0.25s, box-shadow 0.25s;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .input-wrapper input::placeholder {
@@ -169,20 +237,22 @@
     height: 48px;
     background: #e46033;
     color: #1e1e24;
-    padding: 12px 25px;
+    padding: 12px 20px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     font-family: inherit;
     transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 24px;
+    margin-top: 20px;
     box-shadow: 0 4px 12px rgba(228, 96, 51, 0.35);
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .submit-btn:hover {
@@ -197,22 +267,23 @@
 
 /* Data Section */
 .data-section {
-    padding: 24px;
+    padding: 22px 24px;
     background-color: #3a3a3a;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
 }
 
 .data-section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .data-section-header h3 {
     color: #fff;
-    font-size: 20px;
+    font-size: 19px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -226,11 +297,12 @@
     -webkit-overflow-scrolling: touch;
     border-radius: 8px;
     margin-top: 15px;
+    border: 1px solid #444;
 }
 
 /* Custom Scrollbar for Table */
 .table-responsive::-webkit-scrollbar {
-    height: 8px;
+    height: 6px;
 }
 
 .table-responsive::-webkit-scrollbar-track {
@@ -245,7 +317,7 @@
 
 .data-table {
     width: 100%;
-    min-width: 650px;
+    min-width: 580px;
     border-collapse: collapse;
     background-color: #333;
     border-radius: 8px;
@@ -253,9 +325,10 @@
 }
 
 .data-table th, .data-table td {
-    padding: 12px 14px;
+    padding: 11px 13px;
     text-align: left;
     white-space: nowrap;
+    font-size: 13.5px;
 }
 
 .data-table th {
@@ -263,7 +336,7 @@
     color: #e46033;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     border-bottom: 2px solid #444;
 }
@@ -284,15 +357,15 @@
 .price-cell {
     color: #ff9166;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14.5px;
 }
 
 .delete-link {
     color: #ff7548;
     text-decoration: none;
     font-weight: 600;
-    font-size: 13px;
-    padding: 5px 10px;
+    font-size: 12.5px;
+    padding: 4px 8px;
     border-radius: 4px;
     transition: all 0.2s;
     display: inline-flex;
@@ -311,6 +384,7 @@
     align-items: center;
     gap: 12px;
     margin-top: 18px;
+    flex-wrap: wrap;
 }
 
 .btn-sm {
@@ -323,6 +397,7 @@
     align-items: center;
     gap: 6px;
     transition: all 0.2s;
+    box-sizing: border-box;
 }
 
 .btn-clear {
@@ -348,7 +423,7 @@
 }
 
 .no-data {
-    padding: 35px 20px;
+    padding: 30px 18px;
     background-color: #333333;
     border-radius: 8px;
     text-align: center;
@@ -357,95 +432,19 @@
 }
 
 .no-data i {
-    font-size: 36px;
+    font-size: 34px;
     color: #e46033;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: block;
 }
 
 .no-data p {
-    font-size: 15px;
+    font-size: 14.5px;
     margin: 0;
+    line-height: 1.5;
 }
 
 .no-data strong {
-    color: #fff;
-.stats-badge-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-
-.db-badge {
-    background: rgba(56, 161, 105, 0.15);
-    color: #68d391;
-    border: 1px solid rgba(56, 161, 105, 0.4);
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 500;
-}
-
-.shield-badge {
-    background: rgba(228, 96, 51, 0.15);
-    color: #ff9166;
-    border: 1px solid rgba(228, 96, 51, 0.4);
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 500;
-}
-
-.learning-badge {
-    background: rgba(147, 51, 234, 0.15);
-    color: #c084fc;
-    border: 1px solid rgba(147, 51, 234, 0.4);
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 500;
-}
-
-.field-hint {
-    font-size: 11px;
-    color: #888;
-    font-weight: 400;
-}
-
-.export-all-link {
-    color: #e46033;
-    font-size: 13px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-    transition: color 0.2s;
-}
-
-.export-all-link:hover {
-    color: #ff7548;
-    text-decoration: underline;
-}
-
-.btn-sync {
-    background: rgba(66, 153, 225, 0.15);
-    color: #63b3ed;
-    border: 1px solid rgba(66, 153, 225, 0.4);
-}
-
-.btn-sync:hover {
-    background: #3182ce;
     color: #fff;
 }
 
@@ -457,17 +456,18 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+    line-height: 1.4;
 }
 
 /* ============================================================
-   RESPONSIVENESS: Tablet, PC, and Mobile
+   RESPONSIVENESS: Tablet, Mobile, and Small Phones
    ============================================================ */
 
-/* Tablet breakpoint (max-width: 860px) */
+/* Tablet (max-width: 860px) */
 @media screen and (max-width: 860px) {
     .dashboard-container {
-        padding: 22px;
-        margin: 20px auto;
+        padding: 22px 20px;
+        margin: 18px auto;
     }
 
     .header-bar {
@@ -483,34 +483,52 @@
 
     .form-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        gap: 15px;
     }
 }
 
-/* Mobile breakpoint (max-width: 600px) */
-@media screen and (max-width: 600px) {
+/* Mobile Devices (max-width: 640px) */
+@media screen and (max-width: 640px) {
     .dashboard-container {
         padding: 16px 14px;
-        margin: 12px auto;
+        margin: 10px auto;
         border-radius: 10px;
+        box-shadow: 0 0 15px rgba(228, 96, 51, 0.25);
     }
 
     .header-bar {
-        padding-bottom: 15px;
-        margin-bottom: 20px;
+        padding-bottom: 14px;
+        margin-bottom: 18px;
+        gap: 12px;
     }
 
     .header-title-group h2 {
-        font-size: 22px;
+        font-size: 20px;
+        gap: 8px;
+    }
+
+    .header-title-group h2 i {
+        font-size: 23px;
     }
 
     .header-subtitle {
-        font-size: 13px;
+        font-size: 12.5px;
+        margin-top: 4px;
+    }
+
+    .stats-badge-row {
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    .db-badge, .shield-badge, .learning-badge {
+        font-size: 10.5px;
+        padding: 3px 8px;
     }
 
     .header-actions {
-        flex-direction: row;
         width: 100%;
+        gap: 8px;
     }
 
     .header-actions .action-btn {
@@ -518,46 +536,101 @@
         justify-content: center;
         padding: 8px 10px;
         font-size: 12px;
+        height: 38px;
     }
 
     .form-section, .data-section {
-        padding: 16px 14px;
-        margin-bottom: 22px;
+        padding: 16px 12px;
+        margin-bottom: 20px;
+        border-radius: 8px;
     }
 
     .form-section h3, .data-section-header h3 {
-        font-size: 18px;
-        margin-bottom: 16px;
+        font-size: 17px;
+        margin-bottom: 14px;
     }
 
     .form-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 13px;
     }
 
     .full-width-field {
         grid-column: span 1;
     }
 
+    .input-field label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
     .input-wrapper input {
-        height: 44px;
-        font-size: 16px; /* Prevents auto-zoom on iOS */
+        height: 46px;
+        font-size: 16px; /* Prevents auto-zoom in iOS Safari */
+        padding: 10px 12px 10px 38px;
+    }
+
+    .input-icon {
+        left: 12px;
+        font-size: 17px;
     }
 
     .submit-btn {
         height: 46px;
-        font-size: 15px;
-        margin-top: 18px;
+        font-size: 14.5px;
+        margin-top: 16px;
+    }
+
+    .data-table th, .data-table td {
+        padding: 9px 10px;
+        font-size: 12.5px;
+    }
+
+    .price-cell {
+        font-size: 13.5px;
     }
 
     .table-actions-bottom {
         flex-direction: column;
         width: 100%;
+        gap: 8px;
+        margin-top: 14px;
     }
 
     .table-actions-bottom .btn-sm {
         width: 100%;
         justify-content: center;
-        box-sizing: border-box;
+        height: 40px;
+    }
+
+    .dataset-ready-note {
+        font-size: 12px !important;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Extra Small Phones (max-width: 380px) */
+@media screen and (max-width: 380px) {
+    .dashboard-container {
+        padding: 12px 10px;
+        margin: 6px auto;
+    }
+
+    .header-title-group h2 {
+        font-size: 18px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+    }
+
+    .header-actions .action-btn {
+        width: 100%;
+    }
+
+    .db-badge, .shield-badge, .learning-badge {
+        font-size: 10px;
+        padding: 3px 6px;
     }
 }
